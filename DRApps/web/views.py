@@ -1,20 +1,28 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
+from .forms import *
 
-def home_view(request):
-    manga_list = [
-        {
-            'title': 'Solo Leveling',
-            'image': 'https://i.etsystatic.com/37268737/r/il/68e56f/5739564279/il_fullxfull.5739564279_42bi.jpg',
-            'genre': 'Action, Drama, Fantasy',
-            'chapters': 139,
-            'read_link': '#'
-        },
-        {
-            'title': 'The end after beginning',
-            'image': 'https://i.pinimg.com/550x/33/c4/1e/33c41eced43d1a587e9104fe0115d577.jpg',
-            'genre': 'Action, Adventure, Fantasy',
-            'chapters': 325,
-            'read_link': '#'
-        }
-    ]
-    return render(request, 'web_base.html', {'manga_list': manga_list})
+def login_view(request):
+    if request.method == 'POST':
+        form = LoginForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('home')  # Change 'home' to the name of your main page
+    else:
+        form = LoginForm()
+    return render(request, 'web/login.html', {'form': form})
+
+def signup_view(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)  # Log the user in after signup
+            return redirect('home')  # Redirect to home page or any other page after signup
+    else:
+        form = SignUpForm()
+    return render(request, 'web/signup.html', {'form': form})
