@@ -38,9 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-     'DRApps.master',
      'DRApps.web',
-     'DRApps.Admin',
+     'DRApps.user',
 ]
 
 MIDDLEWARE = [
@@ -85,6 +84,10 @@ DATABASES = {
 }
 
 
+AUTHENTICATION_BACKENDS = (
+    'DRApps.user.backends.EmailBackend',  # Add the path to your custom backend here
+    'django.contrib.auth.backends.ModelBackend',  # Default backend (optional)
+)
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -104,6 +107,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
