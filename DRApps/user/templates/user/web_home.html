@@ -238,9 +238,10 @@
                 <h1>Draco</h1>  <!-- Smaller title font size -->
             </div>
             <div class="nav-links">
-                <a href="#">Home</a>
+                <a href="{% url 'manga_list' %}">Home</a>
                 <a href="#">Manga List</a>
                 <a href="#">Contact Us</a>
+                <a href="{% url 'search_anime' %}">Anime Info</a>
             </div>
             <!-- Search Bar in the same row as the Navbar -->
             <div class="search-bar">
@@ -259,7 +260,7 @@
         </div>
         {% endfor %}
     </div>
-    {% block content %}{% endblock %}  <!-- Content of the child template will go here -->
+    {% block content %}{% endblock %}  
     <footer>
         <p>&copy; 2024 Manga Reader. All rights reserved.</p>
     </footer>

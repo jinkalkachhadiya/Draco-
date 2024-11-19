@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+import requests
 from django.views.decorators.csrf import csrf_protect
 from DRApps.web.views import *  # This imports all views from the web app
 
@@ -51,5 +52,28 @@ def logout_user(request):
     logout(request)
     return redirect('login')
   # Replace with your own web page
+def search_anime(request):
+    search_query = request.GET.get('q', '')
+    anime_data = None
+
+    if search_query:
+        # Fetch anime data from Jikan API based on search query
+        url = f'https://api.jikan.moe/v4/anime?q={search_query}&limit=10'
+        response = requests.get(url)
+        if response.status_code == 200:
+            anime_data = response.json()['data']
+
+            # Define excluded ratings and genres
+            excluded_ratings = ['Hentai', 'Rx', 'Adult']
+            excluded_genres = ['Hentai', 'Erotica', 'Adult', 'Mature', 'Ecchi']
+
+            # Filter out anime with excluded ratings or genres
+            anime_data = [
+                anime for anime in anime_data
+                if anime.get('rating') not in excluded_ratings and
+                not any(genre['name'] in excluded_genres for genre in anime.get('genres', []))
+            ]
+
+    return render(request, 'user/images.html', {'anime_data': anime_data, 'search_query': search_query})
 
 
