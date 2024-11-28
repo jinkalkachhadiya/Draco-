@@ -76,4 +76,11 @@ def search_anime(request):
 
     return render(request, 'user/images.html', {'anime_data': anime_data, 'search_query': search_query})
 
+from django.db.models import Q
 
+def search_manga(request):
+    query = request.GET.get('query', '')
+    mangas = Manga.objects.filter(
+        Q(title__icontains=query) | Q(description__icontains=query) | Q(genre__icontains=query)
+    ) if query else []
+    return render(request, 'user/search_results.html', {'mangas': mangas, 'query': query})

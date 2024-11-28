@@ -1,0 +1,24 @@
+{% extends 'user/web_home.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>Search Results for "{{ query }}"</h2>
+    {% if mangas %}
+        <div id="manga-list">
+            {% for manga in mangas %}
+            <div class="manga-card">
+                <a href="{% url 'manga_detail' manga.id %}">
+                    <img src="{{ manga.cover_image.url }}" alt="{{ manga.title }}">
+                    <h3>{{ manga.title }}</h3>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+        {% block manga_list %}
+       <!-- Do not display anything for search result -->
+        {% endblock %}
+    {% else %}
+        <p>No manga found matching your search criteria.</p>
+    {% endif %}
+</div>
+{% endblock %}

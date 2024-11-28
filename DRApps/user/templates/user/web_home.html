@@ -15,11 +15,14 @@
         }
 
         body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
-            line-height: 1.6;
-        }
+    font-family: 'Roboto', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+    display: flex; /* Enable flexbox */
+    flex-direction: column; /* Stack elements vertically */
+    min-height: 100vh; /* Ensure the body takes full height of the viewport */
+}
 
         /* Navbar Styling */
         header {
@@ -30,7 +33,6 @@
             top: 0;
             z-index: 1000;
         }
-
         .navbar {
             display: flex;
             justify-content: space-between;
@@ -39,17 +41,14 @@
             margin: 0 auto;
             padding: 0 20px;
         }
-
         .logo h1 {
             font-size: 20px;  /* Reduced font size */
             font-weight: 500;
         }
-
         .nav-links {
             display: flex;
             justify-content: center;
         }
-
         .nav-links a {
             color: white;
             margin: 0 15px;
@@ -58,11 +57,9 @@
             padding: 10px 0;
             position: relative;
         }
-
         .nav-links a:hover {
             color: #1abc9c;
         }
-
         .nav-links a::after {
             content: '';
             position: absolute;
@@ -75,12 +72,10 @@
             transform-origin: bottom right;
             transition: transform 0.3s ease-out;
         }
-
         .nav-links a:hover::after {
             transform: scaleX(1);
             transform-origin: bottom left;
         }
-
         /* Search Bar Styling */
         .search-bar {
             display: flex;
@@ -88,7 +83,6 @@
             justify-content: flex-end;
             padding: 5px 20px;
         }
-
         .search-bar input {
             padding: 12px;
             width: 300px;
@@ -98,12 +92,10 @@
             margin-right: 10px;
             transition: all 0.3s ease;
         }
-
         .search-bar input:focus {
             border-color: #1abc9c;
             outline: none;
         }
-
         .search-bar button {
             padding: 12px 20px;
             background-color: #1abc9c;
@@ -114,11 +106,9 @@
             font-size: 16px;
             transition: all 0.3s ease;
         }
-
         .search-bar button:hover {
             background-color: #16a085;
         }
-
         /* Manga List Section */
         #manga-list {
             margin-top: 50px;
@@ -127,7 +117,6 @@
             gap: 30px;
             padding: 0 20px;
         }
-
         .manga-card {
             background-color: white;
             border-radius: 10px;
@@ -137,26 +126,22 @@
             cursor: pointer;
             text-align: center;
         }
-
         .manga-card:hover {
             transform: translateY(-10px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
         }
-
         .manga-card img {
             width: 100%;
             height: 350px;
             object-fit: cover;
             border-bottom: 1px solid #ddd;
         }
-
         .manga-card h3 {
             padding: 10px;
             font-size: 16px;  /* Reduced font size */
             color: #333;
             font-weight: 500;
         }
-
         /* Footer Styling */
         footer {
             background-color: #2c3e50;
@@ -164,8 +149,8 @@
             text-align: center;
             padding: 20px;
             margin-top: 50px;
+            position: relative;
         }
-
         /* Modal Styles */
         .modal {
             display: none;
@@ -203,28 +188,26 @@
             color: black;
             text-decoration: none;
         }
-
+        main {
+         flex-grow: 1; /* Allows content to grow and push footer down */
+        }
         /* Responsive Styles */
         @media (max-width: 768px) {
             .search-bar input {
                 width: 250px;
             }
-
             .navbar {
                 flex-direction: column;
                 align-items: center;
             }
-
             .nav-links {
                 margin-top: 10px;
                 flex-direction: column;
                 align-items: center;
             }
-
             .manga-card {
                 margin: 0 auto;
             }
-
             #manga-list {
                 grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             }
@@ -235,32 +218,38 @@
     <header>
         <div class="navbar">
             <div class="logo">
-                <h1>Draco</h1>  <!-- Smaller title font size -->
+                <h1>Draco</h1>
             </div>
             <div class="nav-links">
                 <a href="{% url 'manga_list' %}">Home</a>
-                <a href="#">Manga List</a>
                 <a href="#">Contact Us</a>
                 <a href="{% url 'search_anime' %}">Anime Info</a>
             </div>
-            <!-- Search Bar in the same row as the Navbar -->
+    
+            <!-- Search Bar form -->
             <div class="search-bar">
-                <input type="text" id="searchInput" placeholder="Search Manga...">
-                <button>Search</button>
-            </div>
+            <form method="GET" action="{% url 'search_manga' %}">
+                <input type="text" name="query" id="searchInput" placeholder="Search Manga...">
+                <button type="submit">Search</button>
+            </form>
+        </div>
         </div>
     </header>
-    <div id="manga-list">
-        {% for manga in mangas %}
-        <div class="manga-card">
-            <a href="{% url 'manga_detail' manga.id %}">
-                <img src="{{ manga.cover_image.url }}" alt="{{ manga.title }}">
-                <h4>{{ manga.title }}</h4>
-            </a>
-        </div>
-        {% endfor %}
+    <main>
+   {% block manga_list %}
+<div id="manga-list">
+    {% for manga in mangas %}
+    <div class="manga-card">
+        <a href="{% url 'manga_detail' manga.id %}">
+            <img src="{{ manga.cover_image.url }}" alt="{{ manga.title }}">
+            <h4>{{ manga.title }}</h4>
+        </a>
     </div>
+    {% endfor %}
+</div>
+{% endblock %}
     {% block content %}{% endblock %}  
+</main>
     <footer>
         <p>&copy; 2024 Manga Reader. All rights reserved.</p>
     </footer>
