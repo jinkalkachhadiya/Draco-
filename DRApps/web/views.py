@@ -33,3 +33,4 @@ def chapter_pdf(request, chapter_id):
         response = HttpResponse(pdf.read(), content_type='application/pdf')
         response['Content-Disposition'] = f'inline; filename={pdf_file.name}'
         return response
+    

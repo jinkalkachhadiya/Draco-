@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Draco - Manga Reading Website</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        body {
+            background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        body.light-mode {
+            background: linear-gradient(to bottom, #ffffff, #e6e6e6);
+            color: #000;
+        }
+        body.light-mode header {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+        header h1 {
+            font-size: 2.5rem;
+            color: #ff5e57;
+            text-shadow: 0 0 10px #ff5e57, 0 0 20px #ff5e57;
+        }
+        .intro-section {
+            width: 100%;
+            text-align: center;
+            padding: 100px 20px;
+            background: url('https://wallpaperaccess.com/full/44772.jpg') no-repeat center center;
+            background-size: cover;
+            color: #fff;
+            animation: fadeIn 2s ease-in-out;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            position: relative;
+            min-height: 500px;
+        }
+        .intro-section h2 {
+            font-size: 3.5rem; /* Increased font size */
+            text-shadow: 0 0 20px rgba(255, 94, 87, 0.7), 0 0 30px rgba(255, 94, 87, 0.7); /* Enhanced text shadow */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Elegant font */
+            margin-bottom: 20px;
+            animation: slideIn 1.5s ease-out;
+        }
+        .intro-section p {
+            font-size: 1.5rem;
+            line-height: 1.8;
+            margin-top: 20px;
+            font-family: 'Georgia', serif; /* Serif font for contrast */
+            text-shadow: 0 0 10px rgba(255, 94, 87, 0.6);
+        }
+        .intro-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* Darker overlay for better text visibility */
+            z-index: 1;
+        }
+        .intro-section h2,
+        .intro-section p {
+            position: relative;
+            z-index: 2;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes slideIn {
+            from {
+                transform: translateX(-100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        /* Manga Cards */
+        .manga-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            width: 90%;
+        }
+        .manga-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            overflow: hidden;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .manga-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+        }
+        .manga-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .manga-card:hover img {
+            transform: scale(1.05);
+        }
+        .manga-card h3 {
+            padding: 15px;
+            font-size: 1.2rem;
+            color: #57c0ff;
+        }  
+        /* Footer */
+        footer {
+            margin-top: auto;
+            padding: 20px;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            color: #aaa;
+        }
+        footer nav a {
+            color: #57c0ff;
+            margin: 0 10px;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        footer nav a:hover {
+            color: #ff5e57;
+        }
+        /* Contact Us Section */
+        .contact-section {
+            text-align: center;
+            margin: 50px 0;
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            width: 90%;
+        }
+        .contact-section h2 {
+            font-size: 2rem;
+            color: #ff5e57;
+            margin-bottom: 20px;
+        }
+        .contact-section p {
+            font-size: 1rem;
+            color: #fff;
+        }
+        .social-icons img {
+            width: 40px;
+            height: 40px;
+            margin: 0 10px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .social-icons img:hover {
+            transform: scale(1.3) rotate(10deg);
+            filter: brightness(1.2);
+        }
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            .intro-section h2 {
+                font-size: 2.5rem;
+            }
+            .intro-section p {
+                font-size: 1rem;
+            }
+            .manga-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="intro-section">
+        <h2>Welcome to Draco</h2>
+        <p>Discover a vast collection of mangas and immerse yourself in their captivating worlds!</p>
+    </section>
+    <div class="manga-grid">
+        <div class="manga-card">
+            <img src="https://via.placeholder.com/200x250" alt="Manga Cover">
+            <h3>Manga Title 1</h3>
+            <p>Rating: ★★★★☆</p>
+        </div>
+        <div class="manga-card">
+            <img src="https://via.placeholder.com/200x250" alt="Manga Cover">
+            <h3>Manga Title 2</h3>
+            <p>Rating: ★★★★★</p>
+        </div>
+        <div class="manga-card">
+            <img src="https://via.placeholder.com/200x250" alt="Manga Cover">
+            <h3>Manga Title 3</h3>
+            <p>Rating: ★★★☆☆</p>
+        </div>
+    </div>
+    <section class="contact-section">
+        <h2>Follow Us</h2>
+        <p>Stay updated with the latest mangas and updates!</p>
+        <div class="social-icons">
+            <img src="https://cdn2.iconfinder.com/data/icons/social-media-applications/64/social_media_applications_1-facebook-256.png" alt="Facebook">
+            <img src="https://cdn2.iconfinder.com/data/icons/social-aquiocons/512/Aquicon-Pinterest.png" alt="Pinterest">
+            <img src="https://cdn4.iconfinder.com/data/icons/logos-brands-7/512/instagram_icon-instagram_buttoninstegram-256.png" alt="Instagram">
+        </div>
+    </section>
+    <footer>
+        <p>© 2024 Draco Manga Reading Website. All rights reserved.</p>
+        <nav>
+            <a href="#">Privacy Policy</a> | 
+            <a href="#">Terms of Service</a> | 
+            <a href="#">Contact Us</a>
+        </nav>
+    </footer>
+    <script>
+        const body = document.body;
+        document.getElementById('theme-toggle')?.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+        });
+    </script>
+</body>
+</html>

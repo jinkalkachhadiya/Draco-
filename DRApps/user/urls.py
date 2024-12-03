@@ -8,5 +8,6 @@ urlpatterns = [
     path('logout/', views.logout_user, name='logout'),
     path('search/', views.search_anime, name='search_anime'),
     path('search_manga/', views.search_manga, name='search_manga'),
+    path('home/', views.home_view, name='home'),
 
 ]

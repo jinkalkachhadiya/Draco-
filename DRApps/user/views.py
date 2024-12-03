@@ -2,10 +2,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-import requests
 from django.views.decorators.csrf import csrf_protect
-from DRApps.web.views import *  # This imports all views from the web app
-
+from DRApps.web.views import * 
+import requests 
 
 def signup(request):
     if request.method == 'POST':
@@ -84,3 +83,6 @@ def search_manga(request):
         Q(title__icontains=query) | Q(description__icontains=query) | Q(genre__icontains=query)
     ) if query else []
     return render(request, 'user/search_results.html', {'mangas': mangas, 'query': query})
+
+def home_view(request):
+    return render(request, 'user/home.html',)
